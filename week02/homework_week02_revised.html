@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
+
+        <!-- 구글폰트 -->
+        <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+
+        <title>나홀로 쇼핑몰</title>
+
+        <!-- JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+
+        <!-- 주문하기 Alert-->
+        <script>
+            $(document).ready(function () {
+                exchangeRate();
+            });
+
+            function order() {
+                let re = new RegExp('(010)-[0-9]{4}-[0-9]{4}(?:\\D|$)')
+                let str = $('#input-phone-number').val()
+
+                if ($('#input-username').val() === '') {
+                    alert("주문자 이름을 입력해주세요.")
+                    return false;
+                } else if ($('#input-qty').val() === '') {
+                    alert("수량을 입력해주세요.")
+                    return false;
+                } else if ($('#input-address').val() === '') {
+                    9
+                    alert("주소를 입력해주세요.")
+                    return false;
+                } else if ($('#input-phone-number').val() === '') {
+                    alert("전화번호를 입력해주세요.")
+                    return false;
+                } else if (re.test(str) == false) {
+                    alert("휴대폰번호 입력 형식이 틀립니다.\n 010-0000-0000으로 입력해주세요.")
+                    return false
+                }
+
+                alert("주문이 완료되었습니다.")
+
+            }
+
+            function exchangeRate() {
+                $.ajax({
+                    type: "GET",
+                    url: "https://api.manana.kr/exchange/rate.json",
+                    data: {},
+                    success: function (response) {
+                        // #exchange-rate 비우기
+
+                        // 원-달러 환율 변수에 현재 환율 저장하기
+                        let rate = 0;
+                        for (let i = 0; i < response.length; i++) {
+                            if (response[i]['name'] == 'USDKRW=X') {
+                                rate = response[i]['rate']
+                            }
+                        }
+                        // 추가할 <span>태그 만들기
+                        let tempHtml = `<span>${rate}</span>`
+                        $('#exchange-info').append(tempHtml)
+                    }
+                })
+            };
+
+        </script>
+
+        <style>
+            * {
+                font-family: 'Stylish', sans-serif;
+            }
+
+            .wrap {
+                margin: 20px auto;
+                width: 500px;
+            }
+
+            .main-image {
+                background-image: url("https://image2.lotteimall.com/goods/81/98/63/12639881_L11.jpg");
+                background-size: auto 100%;
+                background-position: center;
+                background-repeat: no-repeat;
+                width: 500px;
+                height: 500px;
+            }
+
+            .product-detail {
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+
+            .inline-header {
+                display: inline;
+            }
+
+            div > p {
+                color: #777777;
+            }
+
+            #exchange-info {
+                color: blue;
+                margin-bottom: 0px;
+            }
+
+            .order {
+                text-align: center;
+            }
+
+            .orders {
+                margin-top: 100px;
+            }
+
+
+        </style>
+    </head>
+    <body>
+        <div class="wrap">
+            <div class="main-image">
+                <img>
+            </div>
+            <div class="product-detail">
+                <h1 class="product-title inline-header">[캐치웰] 프리미엄 무선청소기 C10 + 침구브러시 증정</h1>
+                <h5 class="product-price inline-header">가격: 179,000원</h5>
+                <p>
+                    빠른 회전력으로 보다 쉽게 먼지 청소가 가능합니다. C10 무선 핸디 청소기는 67,000RPM의 회전을 통한 먼지 흡입이 가능합니다. 추가 필터와 LED 소프트롤 브러시를 함께
+                    드립니다.
+                </p>
+                <div id="exchange-info">
+                    달러-원 환율:
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="username">주문자 이름</span>
+                    </div>
+                    <input type="text" class="form-control" id="input-username">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="qty">수량</span>
+                    </div>
+                    <select class="custom-select" id="input-qty">
+                        <option value="">-- 수량을 선택하세요--</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepand">
+                        <span class="input-group-text" id="address">주소</span>
+                    </div>
+                    <input type="text" class="form-control" id="input-address">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepand">
+                        <span class="input-group-text" id="phone-number">전화번호</span>
+                    </div>
+                    <input type="text" class="form-control" id="input-phone-number">
+                </div>
+                <div class="order">
+                    <button onclick="order()" type="submit" class="btn btn-primary">주문하기</button>
+                </div>
+            </div>
+            <div class="orders">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">이름</th>
+                        <th scope="col">수량</th>
+                        <th scope="col">주소</th>
+                        <th scope="col">전화번호</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td scope="row">강민수</td>
+                        <td>1</td>
+                        <td>대한민국 서울</td>
+                        <td>010-1234-5678</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
